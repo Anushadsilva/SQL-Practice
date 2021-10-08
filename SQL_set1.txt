@@ -1,0 +1,64 @@
+# Write your MySQL query statement below
+SELECT
+  *
+FROM
+  Users
+WHERE
+  mail REGEXP '^[a-zA-Z][a-zA-Z0-9_.-]*@leetcode[.]com$';
+
+
+Write an SQL query to report the first name, last name, city, and state of each person in the Person table. 
+If the address of a PersonId is not present in the Address table, report null instead.
+-->select firstname,lastname,city,state from person left join address on person.personid = address.personid; 
+
+ 
+Write an SQL query to report the second highest salary from the Employee table. If there is no second highest salary, the query should report null.
+-->select max(salary) as SecondHighestSalary from Employee
+where salary not in(Select max(salary) from Employee)
+
+Write an SQL query to rank the scores. The ranking should be calculated according to the following rules:
+The scores should be ranked from the highest to the lowest.
+If there is a tie between two scores, both should have the same ranking.
+After a tie, the next ranking number should be the next consecutive integer value. In other words, there should be no holes between ranks.
+Return the result table ordered by score in descending order.
+-->SELECT score, DENSE_RANK() OVER (ORDER BY score DESC) AS 'Rank'
+FROM Scores
+ORDER BY score DESC
+
+Write an SQL query to find the employees who earn more than their managers.
+-->SELECT E1.Name as Employee from employee E1, employee m1
+where E1.ManagerId = m1.id 
+and E1.Salary > m1.Salary;
+
+Write an SQL query to report all the duplicate emails.
+Return the result table in any order.
+-->Select Email from Person 
+group by Email
+having count(Email) > 1
+
+Write an SQL query to report all customers who never order anything.
+Return the result table in any order.
+-->select name as Customers from Customers where Id not in( Select CustomerId from Orders)
+
+Write an SQL query to find employees who have the highest salary in each of the departments.
+
+Return the result table in any order.
+SELECT
+    Department.name AS 'Department',
+    Employee.name AS 'Employee',
+    Salary
+FROM
+    Employee
+        JOIN
+    Department ON Employee.DepartmentId = Department.Id
+WHERE
+    (Employee.DepartmentId , Salary) IN
+    (   SELECT
+            DepartmentId, MAX(Salary)
+        FROM
+            Employee
+        GROUP BY DepartmentId
+    )
+;
+
+
